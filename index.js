@@ -48,8 +48,13 @@ const result = excelToJson({
 const getHeadings = (json) => {
 	let list = [];
 	for (let i = 0; i < 4; i++) {
+		json[i]['DG'] = (json[i]['DG'] * 100).toFixed(2) + ' %';
+		json[i]['DR'] = (json[i]['DR'] * 100).toFixed(2) + ' %';
+		json[i]['DW'] = (json[i]['DW'] * 100).toFixed(2) + ' %';
+		json[i]['DZ'] = (json[i]['DZ'] * 100).toFixed(2) + ' %';
 		list.push(json[i]);
 	}
+	delete list[3]['B'];
 	return list;
 };
 
@@ -77,6 +82,10 @@ const findRecord = (companyName, json) => {
 			//Remove double quotes surrounding the name
 			record = record.slice(1, record.length - 1);
 			if (record === companyName) {
+				json[i]['DG'] = (json[i]['DG'] * 100).toFixed(2) + ' %';
+				json[i]['DR'] = (json[i]['DR'] * 100).toFixed(2) + ' %';
+				json[i]['DW'] = (json[i]['DW'] * 100).toFixed(2) + ' %';
+				json[i]['DZ'] = (json[i]['DZ'] * 100).toFixed(2) + ' %';
 				data.push(json[i]);
 			}
 		}
@@ -86,7 +95,8 @@ const findRecord = (companyName, json) => {
 };
 
 // const headers = getHeadings(headings.DLAR);
-// const records = findRecord('Nb Network Solutions', result.DLAR);
+// const records = findRecord('Turq Cell', result.DLAR);
+// console.log(records);
 // console.log([ ...headers, ...records ]);
 
 // console.log(findRecord('Nb Network Solutions', result.DLAR));
