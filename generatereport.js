@@ -1,19 +1,29 @@
 const Excel = require('exceljs');
 
 const options = {
-	filename: 'myfile.xlsx',
+	filename: 'report.xlsx',
 	useStyles: true,
 	useSharedStrings: true
 };
 
 const workbook = new Excel.stream.xlsx.WorkbookWriter(options);
 
-const worksheet = workbook.addWorksheet('my sheet');
+const worksheet = workbook.addWorksheet('DLAR');
 
 worksheet.columns = [
-	{ header: 'Id', key: 'id' },
-	{ header: 'First Name', key: 'first name' },
-	{ header: 'Phone', key: 'ph' }
+	{ header: 'Company Name', key: 'Company Name' },
+	{ header: 'Address', key: 'Address' },
+	{ header: 'City', key: 'City' },
+	{ header: 'State', key: 'State' },
+	{ header: 'Jan-19', key: 'Jan-19' },
+	{ header: 'Nov-19', key: 'Nov-19' },
+	{ header: 'Dec-19', key: 'Dec-19' },
+	{ header: 'Jan-20', key: 'Jan-20' },
+	{ header: 'Comp 3rd Month (Current Month)', key: 'Comp 3rd Month (Current Month)' },
+	{ header: 'Ports in Percent', key: 'Ports in Percent' },
+	{ header: 'Prior Month Conversion Rate', key: 'Prior Month Conversion Rate' },
+	{ header: 'RPL Count', key: 'RPL Count' },
+	{ header: 'Conversion Rate', key: 'Conversion Rate' }
 ];
 
 var data;

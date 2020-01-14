@@ -1,6 +1,6 @@
 'use strict';
 const excelToJson = require('convert-excel-to-json');
-const xlsx = require('json-as-xlsx');
+const Excel = require('exceljs');
 
 const result = excelToJson({
 	sourceFile: 'data/data.xlsx',
@@ -59,28 +59,40 @@ const findRecord = (companyName, json) => {
 // console.log(setHeadings(findRecord('Company Name', result.DLAR))['Projection']);
 // console.log(listCompanies(result.DLAR));
 
-const records = findRecord('Nb Network Solutions', result.DLAR);
-const columns = [
-	{ label: 'Company Name', value: 'company name' },
-	{ label: 'Address', value: 'address' },
-	{ label: 'City', value: 'city' },
-	{ label: 'State', value: 'state' },
-	{ label: 'Jan-19', value: 'jan-19' },
-	{ label: 'Nov-19', value: 'nov-19' },
-	{ label: 'Dec-19', value: 'dec-19' },
-	{ label: 'Jan-20', value: 'jan-20' },
-	{ label: 'Comp 3rd Month (Current Month)', value: 'comp 3rd month (current month)' },
-	{ label: 'Ports in Percent', value: 'ports in percent' },
-	{ label: 'Prior Month Conversion Rate', value: 'prior month conversion rate' },
-	{ label: 'RPL Count', value: 'rpl count' },
-	{ label: 'Conversion Rate', value: 'conversion rate' }
-];
+const generateExcel = (json) => {
+	const options = {
+		filename: 'report.xlsx',
+		useStyles: true,
+		useSharedStrings: true
+	};
 
-let content = [ ...records ];
+	const workbook = new Excel.stream.xlsx.WorkbookWriter(options);
+	const worksheet = workbook.addWorksheet('DLAR');
 
-const settings = {
-	sheetName: 'DLAR',
-	fileName: 'Report'
+	worksheet.columns = [
+		{ header: 'Company Name', key: 'Company Name' },
+		{ header: 'Address', key: 'Address' },
+		{ header: 'City', key: 'City' },
+		{ header: 'State', key: 'State' },
+		{ header: 'Jan-19', key: 'Jan-19' },
+		{ header: 'Nov-19', key: 'Nov-19' },
+		{ header: 'Dec-19', key: 'Dec-19' },
+		{ header: 'Jan-20', key: 'Jan-20' },
+		{ header: 'Comp 3rd Month (Current Month)', key: 'Comp 3rd Month (Current Month)' },
+		{ header: 'Ports in Percent', key: 'Ports in Percent' },
+		{ header: 'Prior Month Conversion Rate', key: 'Prior Month Conversion Rate' },
+		{ header: 'RPL Count', key: 'RPL Count' },
+		{ header: 'Conversion Rate', key: 'Conversion Rate' }
+	];
+
+	for (let i = 0; i < json.length; i++) {
+		worksheet.addRow(json[i]).commit();
+	}
+
+	workbook.commit().then(() => {
+		console.log('excel file cretaed');
+	});
 };
 
-xlsx(columns, content, settings);
+const records = findRecord('Nb Network Solutions', result.DLAR);
+generateExcel(records);
