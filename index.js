@@ -2,33 +2,63 @@
 const excelToJson = require('convert-excel-to-json');
 const Excel = require('exceljs');
 
+const headings = excelToJson({
+	sourceFile: 'data/data.xlsx',
+	sheets: [ 'DLAR' ],
+	columnToKey: {
+		B: 'B',
+		L: 'L',
+		N: 'N',
+		O: 'O',
+		P: 'P',
+		AI: 'AI',
+		AJ: 'AJ',
+		AK: 'AK',
+		AL: 'AL',
+		DG: 'DG',
+		DR: 'DR',
+		DW: 'DW',
+		DY: 'DY',
+		DZ: 'DZ'
+	}
+});
+
 const result = excelToJson({
 	sourceFile: 'data/data.xlsx',
 	rows: 5,
 	sheets: [ 'DLAR' ],
 	columnToKey: {
-		L: 'Company Name',
-		N: 'Address',
-		O: 'City',
-		P: 'State',
-		AI: 'Jan-19',
-		AJ: 'Nov-19',
-		AK: 'Dec-19',
-		AL: 'Jan-20',
-		DG: 'Comp 3rd Month (Current Month)',
-		DR: 'Ports in Percent',
-		DW: 'Prior Month Conversion Rate',
-		DY: 'RPL Count',
-		DZ: 'Conversion Rate'
+		L: 'L',
+		N: 'N',
+		O: 'O',
+		P: 'P',
+		AI: 'AI',
+		AJ: 'AJ',
+		AK: 'AK',
+		AL: 'AL',
+		DG: 'DG',
+		DR: 'DR',
+		DW: 'DW',
+		DY: 'DY',
+		DZ: 'DZ'
 	}
 });
+
+/* Retrieve the heading row from JSON data */
+const getHeadings = (json) => {
+	let list = [];
+	for (let i = 0; i < 4; i++) {
+		list.push(json[i]);
+	}
+	return list;
+};
 
 /* Return a array of company names from the JSON data */
 const listCompanies = (json) => {
 	let list = [];
 	for (let i = 0; i < json.length; i++) {
-		if (json[i].hasOwnProperty('Company Name')) {
-			let record = JSON.stringify(json[i]['Company Name']).trim();
+		if (json[i].hasOwnProperty('L')) {
+			let record = JSON.stringify(json[i]['L']).trim();
 			record = record.slice(1, record.length - 1);
 			list.push(record);
 			continue;
@@ -42,8 +72,8 @@ const findRecord = (companyName, json) => {
 	let data = [];
 
 	for (let i = 0; i < json.length; i++) {
-		if (json[i].hasOwnProperty('Company Name')) {
-			let record = JSON.stringify(json[i]['Company Name']).trim();
+		if (json[i].hasOwnProperty('L')) {
+			let record = JSON.stringify(json[i]['L']).trim();
 			//Remove double quotes surrounding the name
 			record = record.slice(1, record.length - 1);
 			if (record === companyName) {
@@ -54,6 +84,10 @@ const findRecord = (companyName, json) => {
 	const result = data.length !== 0 ? data : 'Company Name does not exist!';
 	return result;
 };
+
+// const headers = getHeadings(headings.DLAR);
+// const records = findRecord('Nb Network Solutions', result.DLAR);
+// console.log([ ...headers, ...records ]);
 
 // console.log(findRecord('Nb Network Solutions', result.DLAR));
 // console.log(setHeadings(findRecord('Company Name', result.DLAR))['Projection']);
@@ -68,21 +102,21 @@ const generateExcel = (json) => {
 
 	const workbook = new Excel.stream.xlsx.WorkbookWriter(options);
 	const worksheet = workbook.addWorksheet('DLAR');
-
 	worksheet.columns = [
-		{ header: 'Company Name', key: 'Company Name' },
-		{ header: 'Address', key: 'Address' },
-		{ header: 'City', key: 'City' },
-		{ header: 'State', key: 'State' },
-		{ header: 'Jan-19', key: 'Jan-19' },
-		{ header: 'Nov-19', key: 'Nov-19' },
-		{ header: 'Dec-19', key: 'Dec-19' },
-		{ header: 'Jan-20', key: 'Jan-20' },
-		{ header: 'Comp 3rd Month (Current Month)', key: 'Comp 3rd Month (Current Month)' },
-		{ header: 'Ports in Percent', key: 'Ports in Percent' },
-		{ header: 'Prior Month Conversion Rate', key: 'Prior Month Conversion Rate' },
-		{ header: 'RPL Count', key: 'RPL Count' },
-		{ header: 'Conversion Rate', key: 'Conversion Rate' }
+		{ header: '', key: 'B' },
+		{ header: '', key: 'L' },
+		{ header: '', key: 'N' },
+		{ header: '', key: 'O' },
+		{ header: '', key: 'P' },
+		{ header: '', key: 'AI' },
+		{ header: '', key: 'AJ' },
+		{ header: '', key: 'AK' },
+		{ header: '', key: 'AL' },
+		{ header: '', key: 'DG' },
+		{ header: '', key: 'DR' },
+		{ header: '', key: 'DW' },
+		{ header: '', key: 'DY' },
+		{ header: '', key: 'DZ' }
 	];
 
 	for (let i = 0; i < json.length; i++) {
@@ -95,4 +129,6 @@ const generateExcel = (json) => {
 };
 
 const records = findRecord('Nb Network Solutions', result.DLAR);
-generateExcel(records);
+const headers = getHeadings(headings.DLAR);
+
+generateExcel([ ...headers, ...records ]);
