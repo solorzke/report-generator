@@ -4,7 +4,7 @@ $action = filter_input(INPUT_GET, 'action');
 if (!isset($action)) {
     $action = filter_input(INPUT_POST, 'action');
     if (!isset($action)) {
-        header('Location: index.html');
+        header('Location: view/index.html');
     }
 }
 
