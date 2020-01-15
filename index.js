@@ -94,15 +94,7 @@ const findRecord = (companyName, json) => {
 	return result;
 };
 
-// const headers = getHeadings(headings.DLAR);
-// const records = findRecord('Turq Cell', result.DLAR);
-// console.log(records);
-// console.log([ ...headers, ...records ]);
-
-// console.log(findRecord('Nb Network Solutions', result.DLAR));
-// console.log(setHeadings(findRecord('Company Name', result.DLAR))['Projection']);
-// console.log(listCompanies(result.DLAR));
-
+/* Generate the XLSX file based on the sorted data */
 const generateExcel = (json) => {
 	const options = {
 		filename: 'report.xlsx',
