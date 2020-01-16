@@ -132,5 +132,5 @@ const generateExcel = (json) => {
 
 const records = findRecord('Nb Network Solutions', result.DLAR);
 const headers = getHeadings(headings.DLAR);
-
-generateExcel([ ...headers, ...records ]);
+console.log('It worked');
+//generateExcel([ ...headers, ...records ]);
