@@ -4,6 +4,7 @@ console.log('JS script "query.js" loaded...');
 let headerRows;
 let resultRows;
 let selected = [];
+let file_path;
 
 $(document).ready(() => {
 	console.log('Modules Loaded. App main screen displayed...');
@@ -12,7 +13,7 @@ $(document).ready(() => {
 	$('#upload').click((event) => {
 		console.log('User uploaded file: ' + document.getElementById('filename').files[0]);
 		console.log('Uploaded File path: ' + document.getElementById('filename').files[0].path);
-		const file_path = document.getElementById('filename').files[0].path;
+		file_path = document.getElementById('filename').files[0].path;
 		console.log('Retrieving Company Names...\n');
 		headerRows = headings(file_path);
 		resultRows = result(file_path);
@@ -34,5 +35,16 @@ $(document).ready(() => {
 	});
 
 	/* Generate the report after user clicks the 'generate' button */
-	$();
+	$('#generate').click((event) => {
+		console.log('Generating report document based on the query data...');
+		const headers = getHeadings(headerRows.DLAR);
+		let data = [ ...headers ];
+		for (let i = 0; i < selected.length; i++) {
+			data = [ ...data, ...findRecord(selected[i], resultRows.DLAR) ];
+		}
+		console.log('Finshed query. Generating report...');
+		const new_path = parse_path(file_path);
+		generateExcel(new_path, data);
+		console.log('Report generated....');
+	});
 });

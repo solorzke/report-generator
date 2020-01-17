@@ -4,6 +4,13 @@ const Excel = require('exceljs');
 
 console.log("Node.js script: 'index.js' loaded...");
 
+/* Retrieve the root path of the file that was submitted and return a new file path */
+const parse_path = (file_path) => {
+	const index = file_path.lastIndexOf('/');
+	const path = file_path.substr(0, index + 1);
+	return path + 'report.xlsx';
+};
+
 const headings = (file_path) => {
 	return excelToJson({
 		sourceFile: file_path,
@@ -96,10 +103,12 @@ const result = (file_path) => {
 const getHeadings = (json) => {
 	let list = [];
 	for (let i = 0; i < 4; i++) {
-		json[i]['DG'] = (json[i]['DG'] * 100).toFixed(2) + ' %';
-		json[i]['DR'] = (json[i]['DR'] * 100).toFixed(2) + ' %';
-		json[i]['DW'] = (json[i]['DW'] * 100).toFixed(2) + ' %';
-		json[i]['DZ'] = (json[i]['DZ'] * 100).toFixed(2) + ' %';
+		if (i != 0 && i != 3) {
+			json[i]['DG'] = (json[i]['DG'] * 100).toFixed(2) + ' %';
+			json[i]['DR'] = (json[i]['DR'] * 100).toFixed(2) + ' %';
+			json[i]['DW'] = (json[i]['DW'] * 100).toFixed(2) + ' %';
+			json[i]['DZ'] = (json[i]['DZ'] * 100).toFixed(2) + ' %';
+		}
 		list.push(json[i]);
 	}
 	delete list[3]['B'];
@@ -146,9 +155,9 @@ const findRecord = (companyName, json) => {
 };
 
 /* Generate the XLSX file based on the sorted data */
-const generateExcel = (json) => {
+const generateExcel = (file_path, json) => {
 	const options = {
-		filename: '../report.xlsx',
+		filename: file_path,
 		useStyles: true,
 		useSharedStrings: true
 	};
@@ -177,11 +186,15 @@ const generateExcel = (json) => {
 	}
 
 	workbook.commit().then(() => {
-		console.log('excel file cretaed');
+		console.log('File created. Stored in ' + file_path);
 	});
 };
 
-// const records = findRecord('Nb Network Solutions', result.DLAR);
-// const headers = getHeadings(headings.DLAR);
-//console.log('It worked');
-//generateExcel([ ...headers, ...records ]);
+// const r = result('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx').DLAR;
+// const records = findRecord('Nb Network Solutions', r);
+// const h = headings('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx');
+// // //const headers = getHeadings(h);
+// // console.log(records);
+// // //generateExcel([ ...headers, ...records ]);
+// const headers = getHeadings(h.DLAR);
+// console.log(headers);
