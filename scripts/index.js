@@ -2,47 +2,95 @@
 const excelToJson = require('convert-excel-to-json');
 const Excel = require('exceljs');
 
-const headings = excelToJson({
-	sourceFile: 'data/data.xlsx',
-	sheets: [ 'DLAR' ],
-	columnToKey: {
-		B: 'B',
-		L: 'L',
-		N: 'N',
-		O: 'O',
-		P: 'P',
-		AI: 'AI',
-		AJ: 'AJ',
-		AK: 'AK',
-		AL: 'AL',
-		DG: 'DG',
-		DR: 'DR',
-		DW: 'DW',
-		DY: 'DY',
-		DZ: 'DZ'
-	}
-});
+console.log("Node.js script: 'index.js' loaded...");
 
-const result = excelToJson({
-	sourceFile: 'data/data.xlsx',
-	rows: 5,
-	sheets: [ 'DLAR' ],
-	columnToKey: {
-		L: 'L',
-		N: 'N',
-		O: 'O',
-		P: 'P',
-		AI: 'AI',
-		AJ: 'AJ',
-		AK: 'AK',
-		AL: 'AL',
-		DG: 'DG',
-		DR: 'DR',
-		DW: 'DW',
-		DY: 'DY',
-		DZ: 'DZ'
-	}
-});
+const headings = (file_path) => {
+	return excelToJson({
+		sourceFile: file_path,
+		sheets: [ 'DLAR' ],
+		columnToKey: {
+			B: 'B',
+			L: 'L',
+			N: 'N',
+			O: 'O',
+			P: 'P',
+			AI: 'AI',
+			AJ: 'AJ',
+			AK: 'AK',
+			AL: 'AL',
+			DG: 'DG',
+			DR: 'DR',
+			DW: 'DW',
+			DY: 'DY',
+			DZ: 'DZ'
+		}
+	});
+};
+
+const result = (file_path) => {
+	return excelToJson({
+		sourceFile: file_path,
+		rows: 5,
+		sheets: [ 'DLAR' ],
+		columnToKey: {
+			L: 'L',
+			N: 'N',
+			O: 'O',
+			P: 'P',
+			AI: 'AI',
+			AJ: 'AJ',
+			AK: 'AK',
+			AL: 'AL',
+			DG: 'DG',
+			DR: 'DR',
+			DW: 'DW',
+			DY: 'DY',
+			DZ: 'DZ'
+		}
+	});
+};
+
+// const headings = excelToJson({
+// 	sourceFile: 'data/data.xlsx',
+// 	sheets: [ 'DLAR' ],
+// 	columnToKey: {
+// 		B: 'B',
+// 		L: 'L',
+// 		N: 'N',
+// 		O: 'O',
+// 		P: 'P',
+// 		AI: 'AI',
+// 		AJ: 'AJ',
+// 		AK: 'AK',
+// 		AL: 'AL',
+// 		DG: 'DG',
+// 		DR: 'DR',
+// 		DW: 'DW',
+// 		DY: 'DY',
+// 		DZ: 'DZ'
+// 	}
+// });
+
+// const result = excelToJson({
+// 	sourceFile: 'data/data.xlsx',
+// 	rows: 5,
+// 	sheets: [ 'DLAR' ],
+// 	columnToKey: {
+// 		L: 'L',
+// 		N: 'N',
+// 		O: 'O',
+// 		P: 'P',
+// 		AI: 'AI',
+// 		AJ: 'AJ',
+// 		AK: 'AK',
+// 		AL: 'AL',
+// 		DG: 'DG',
+// 		DR: 'DR',
+// 		DW: 'DW',
+// 		DY: 'DY',
+// 		DZ: 'DZ'
+// 	}
+// });
 
 /* Retrieve the heading row from JSON data */
 const getHeadings = (json) => {
@@ -65,8 +113,11 @@ const listCompanies = (json) => {
 		if (json[i].hasOwnProperty('L')) {
 			let record = JSON.stringify(json[i]['L']).trim();
 			record = record.slice(1, record.length - 1);
-			list.push(record);
-			continue;
+			if (!list.includes(record)) {
+				list.push(record);
+			} else {
+				continue;
+			}
 		}
 	}
 	return list;
@@ -97,7 +148,7 @@ const findRecord = (companyName, json) => {
 /* Generate the XLSX file based on the sorted data */
 const generateExcel = (json) => {
 	const options = {
-		filename: 'report.xlsx',
+		filename: '../report.xlsx',
 		useStyles: true,
 		useSharedStrings: true
 	};
@@ -130,7 +181,7 @@ const generateExcel = (json) => {
 	});
 };
 
-const records = findRecord('Nb Network Solutions', result.DLAR);
-const headers = getHeadings(headings.DLAR);
-console.log('It worked');
+// const records = findRecord('Nb Network Solutions', result.DLAR);
+// const headers = getHeadings(headings.DLAR);
+//console.log('It worked');
 //generateExcel([ ...headers, ...records ]);

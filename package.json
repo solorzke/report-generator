@@ -1,0 +1,29 @@
+{
+  "name": "report-generator",
+  "version": "1.0.0",
+  "description": "Report Generator desktop app that runs Node.js in background",
+  "main": "main.js",
+  "dependencies": {
+    "convert-excel-to-json": "^1.6.1",
+    "electron": "^7.1.9",
+    "exceljs": "^3.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solorzke/report-generator.git"
+  },
+  "keywords": [
+    "report",
+    "generator"
+  ],
+  "author": "Kevin Solorzano",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solorzke/report-generator/issues"
+  },
+  "homepage": "https://github.com/solorzke/report-generator#readme"
+}
