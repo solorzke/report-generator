@@ -176,8 +176,8 @@ const generateExcel = (file_path, json) => {
 	});
 };
 
-const r = result('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx').DLAR;
-console.log(findRecord([ 'marco solorzano', 'Marco Solorzano' ], 'Nb Network Solutions', r));
+// const r = result('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx').DLAR;
+// console.log(findRecord([ 'marco solorzano', 'Marco Solorzano' ], 'Nb Network Solutions', r));
 // // const records = findRecord('Nb Network Solutions', r);
 // // const h = headings('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx');
 // // // //const headers = getHeadings(h);
