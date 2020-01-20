@@ -44,6 +44,7 @@ const result = (file_path) => {
 			N: 'N',
 			O: 'O',
 			P: 'P',
+			W: 'W',
 			AI: 'AI',
 			AJ: 'AJ',
 			AK: 'AK',
@@ -56,48 +57,6 @@ const result = (file_path) => {
 		}
 	});
 };
-
-// const headings = excelToJson({
-// 	sourceFile: 'data/data.xlsx',
-// 	sheets: [ 'DLAR' ],
-// 	columnToKey: {
-// 		B: 'B',
-// 		L: 'L',
-// 		N: 'N',
-// 		O: 'O',
-// 		P: 'P',
-// 		AI: 'AI',
-// 		AJ: 'AJ',
-// 		AK: 'AK',
-// 		AL: 'AL',
-// 		DG: 'DG',
-// 		DR: 'DR',
-// 		DW: 'DW',
-// 		DY: 'DY',
-// 		DZ: 'DZ'
-// 	}
-// });
-
-// const result = excelToJson({
-// 	sourceFile: 'data/data.xlsx',
-// 	rows: 5,
-// 	sheets: [ 'DLAR' ],
-// 	columnToKey: {
-// 		L: 'L',
-// 		N: 'N',
-// 		O: 'O',
-// 		P: 'P',
-// 		AI: 'AI',
-// 		AJ: 'AJ',
-// 		AK: 'AK',
-// 		AL: 'AL',
-// 		DG: 'DG',
-// 		DR: 'DR',
-// 		DW: 'DW',
-// 		DY: 'DY',
-// 		DZ: 'DZ'
-// 	}
-// });
 
 /* Retrieve the heading row from JSON data */
 const getHeadings = (json) => {
@@ -115,15 +74,15 @@ const getHeadings = (json) => {
 	return list;
 };
 
-/* Return a array of company names from the JSON data */
-const listCompanies = (json) => {
+/* Return a array of employee names from the JSON data */
+const listEmployees = (json) => {
 	let list = [];
 	for (let i = 0; i < json.length; i++) {
-		if (json[i].hasOwnProperty('L')) {
-			let record = JSON.stringify(json[i]['L']).trim();
-			record = record.slice(1, record.length - 1);
-			if (!list.includes(record)) {
-				list.push(record);
+		if (json[i].hasOwnProperty('W')) {
+			let name = JSON.stringify(json[i]['W']).trim();
+			name = name.slice(1, name.length - 1);
+			if (!list.includes(name)) {
+				list.push(name);
 			} else {
 				continue;
 			}
@@ -132,25 +91,52 @@ const listCompanies = (json) => {
 	return list;
 };
 
-/* Find the record of the company name via JSON. Return as obj */
-const findRecord = (companyName, json) => {
-	let data = [];
-
+/* Return a array of company names based on the selected employee names from the JSON data */
+const listCompanies = (employees, json) => {
+	let list = [];
 	for (let i = 0; i < json.length; i++) {
-		if (json[i].hasOwnProperty('L')) {
-			let record = JSON.stringify(json[i]['L']).trim();
-			//Remove double quotes surrounding the name
-			record = record.slice(1, record.length - 1);
-			if (record === companyName) {
-				json[i]['DG'] = (json[i]['DG'] * 100).toFixed(2) + ' %';
-				json[i]['DR'] = (json[i]['DR'] * 100).toFixed(2) + ' %';
-				json[i]['DW'] = (json[i]['DW'] * 100).toFixed(2) + ' %';
-				json[i]['DZ'] = (json[i]['DZ'] * 100).toFixed(2) + ' %';
-				data.push(json[i]);
+		if (json[i].hasOwnProperty('L') && json[i].hasOwnProperty('W')) {
+			//Condition is skipped if there is no employee name
+			let employee = JSON.stringify(json[i]['W']).trim();
+			employee = employee.slice(1, employee.length - 1);
+			if (employees.includes(employee)) {
+				let company = JSON.stringify(json[i]['L']).trim();
+				company = company.slice(1, company.length - 1);
+				if (!list.includes(company)) {
+					list.push(company);
+				} else {
+					continue;
+				}
+			} else continue;
+		}
+	}
+	return list;
+};
+
+/* Find the record of the company name via JSON. Return as obj */
+const findRecord = (employees, companyName, json) => {
+	let data = [];
+	for (let i = 0; i < json.length; i++) {
+		if (json[i].hasOwnProperty('L') && json[i].hasOwnProperty('W')) {
+			let employee = JSON.stringify(json[i]['W']).trim();
+			employee = employee.slice(1, employee.length - 1);
+
+			if (employees.includes(employee)) {
+				let record = JSON.stringify(json[i]['L']).trim();
+				//Remove double quotes surrounding the name
+				record = record.slice(1, record.length - 1);
+				if (record === companyName) {
+					json[i]['DG'] = (json[i]['DG'] * 100).toFixed(2) + ' %';
+					json[i]['DR'] = (json[i]['DR'] * 100).toFixed(2) + ' %';
+					json[i]['DW'] = (json[i]['DW'] * 100).toFixed(2) + ' %';
+					json[i]['DZ'] = (json[i]['DZ'] * 100).toFixed(2) + ' %';
+					delete json[i]['W']; //erase employee name not needed
+					data.push(json[i]);
+				}
 			}
 		}
 	}
-	const result = data.length !== 0 ? data : 'Company Name does not exist!';
+	const result = data.length !== 0 ? data : [ 'Company Name does not exist!' ];
 	return result;
 };
 
@@ -190,11 +176,14 @@ const generateExcel = (file_path, json) => {
 	});
 };
 
-// const r = result('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx').DLAR;
-// const records = findRecord('Nb Network Solutions', r);
-// const h = headings('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx');
-// // //const headers = getHeadings(h);
-// // console.log(records);
-// // //generateExcel([ ...headers, ...records ]);
-// const headers = getHeadings(h.DLAR);
-// console.log(headers);
+const r = result('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx').DLAR;
+console.log(findRecord([ 'marco solorzano', 'Marco Solorzano' ], 'Nb Network Solutions', r));
+// // const records = findRecord('Nb Network Solutions', r);
+// // const h = headings('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx');
+// // // //const headers = getHeadings(h);
+// // // console.log(records);
+// // // //generateExcel([ ...headers, ...records ]);
+// // const headers = getHeadings(h.DLAR);
+// // console.log(headers);
+// const a = findRecord('Nb Network Solutions', r);
+// console.log(a);
