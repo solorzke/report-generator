@@ -17,40 +17,42 @@
             <div class="container d-flex flex-column about py-5">
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <h1 class="pb-5 text-left">Step 1: Select Your Spreadsheet File</h1>
+                        <h1 class="pb-5 text-left">Step 1: Select File</h1>
                         <form method="#" action="#" enctype="multipart/form-data">
                             <label>Upload File</label>
                             <input id="filename" type="file" name="file">
                             <input type="hidden" name="action" value="upload">
-                            <button style="border-radius: 25px;" class="my-2 btn btn-primary btn-md px-5" id="upload" onclick="return false;">Upload</button>
+                            <button style="border-radius: 25px;" class="my-3 btn btn-primary btn-md px-5" id="upload" onclick="return false;">Upload</button>
                         </form>
                     </div>
                 </div>
                 <div id="emp-view" class="row justify-content-center py-5 invisible">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <h1 class="pb-5 text-left">Step 2: Select Employees</h1>
                         <label>Choose Employee(s)</label>
                         <select id="employees">
                             <option value=""></option>
                         </select>
-                        <button style="border-radius: 25px;" class="my-2 btn btn-primary btn-md px-5" id="emp-btn" onclick="return false;">Confirm</button>
+                        <button style="border-radius: 25px;" class="my-2 btn btn-primary btn-sm px-2" id="emp-btn" onclick="return false;">Confirm</button>
                     </div>
-                    <div class="col-md-2">
-                        <h4 id="emp-list">Employee:</h4>
+                    <div class="col-md-4">
+                        <h4>Employee:</h4>
+                        <hr id="emp-list">
                     </div>
                 </div>        
                 <div class="row py-5 invisible" id="cp-view">             
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <h1 class="pb-5 text-left">Step 3: Select Companies</h1>
                         <label>Choose Company(s)</label>
                         <select id="companies" required>
                             <option value=""></option>
                         </select>       
-                        <button style="border-radius: 25px;" class="my-2 btn btn-primary btn-md px-5" id="cp-btn" onclick="return false;">Confirm</button>                 
+                        <button style="border-radius: 25px;" class="my-2 btn btn-primary btn-sm px-2" id="cp-btn" onclick="return false;">Confirm</button>                 
                         <button style="border-radius: 25px;" class="my-5 btn btn-success btn-lg btn-block px-5" id="generate" onclick="return false;">Generate Report</button>
                     </div>
-                    <div class="col-md-2">
-                        <h4 id="co-list">Companies:</h4>
+                    <div class="col-md-4">
+                        <h4>Companies:</h4>
+                        <hr id="co-list">
                     </div>
                 </div>
             </div>
