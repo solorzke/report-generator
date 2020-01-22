@@ -7,6 +7,18 @@ let selected = [ [], [] ];
 let file_path;
 let data = [];
 
+/* Splice item from an array */
+const removeItem = (element, array) => {
+	const item = element.getAttribute('data-name');
+	console.log('Data: ' + item);
+	array.splice(array.indexOf(item), 1);
+	$('div[data-name="' + item + '"]').remove();
+	console.log('Removed item: ' + item + '\nCurrent list: ' + array);
+};
+
+$('#emp-view').slideUp(0);
+$('#cp-view').slideUp(0);
+
 $(document).ready(() => {
 	console.log('Modules Loaded. App main screen displayed...');
 
@@ -23,6 +35,8 @@ $(document).ready(() => {
 			$('#employees').append(new Option(employees[i], employees[i]));
 		}
 		console.log('Employee names loaded...');
+		$('#emp-view').toggleClass('invisible');
+		$('#emp-view').slideDown(1000);
 	});
 
 	/* Every time the user selects a company, add it to the array */
@@ -31,7 +45,15 @@ $(document).ready(() => {
 		if (!selected[1].includes(this.value)) {
 			selected[1].push(this.value);
 			console.log('Companies selected: ' + selected[1]);
-			$('#co-list').after('<p>' + this.value + '</p>');
+			$('#co-list').after(
+				'<div data-name="' +
+					this.value +
+					'"><p class="d-inline-block">' +
+					this.value +
+					'</p><button data-name="' +
+					this.value +
+					'" class="float-right btn btn-sm btn-danger ml-2 del-co" onclick="removeItem(this, selected[1]);">Delete</button></div>'
+			);
 		}
 	});
 
@@ -41,7 +63,15 @@ $(document).ready(() => {
 		if (!selected[0].includes(this.value)) {
 			selected[0].push(this.value);
 			console.log('Employees selected: ' + selected[0]);
-			$('#emp-list').after('<p>' + this.value + '</p>');
+			$('#emp-list').after(
+				'<div data-name="' +
+					this.value +
+					'"><p class="d-inline-block">' +
+					this.value +
+					'</p><button data-name="' +
+					this.value +
+					'" class="float-right btn btn-sm btn-danger ml-2 del-emp" onclick="removeItem(this, selected[0]);">Delete</button></div>'
+			);
 		}
 	});
 
@@ -52,6 +82,8 @@ $(document).ready(() => {
 			$('#companies').append(new Option(companies[i], companies[i]));
 		}
 		console.log('Company list loaded...');
+		$('#cp-view').toggleClass('invisible');
+		$('#cp-view').slideDown(1000);
 	});
 
 	/* When Company List is confirmed, run a query for each item on the list */
