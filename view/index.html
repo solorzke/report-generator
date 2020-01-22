@@ -17,14 +17,15 @@
             <!--Container Section-->
             <div class="container d-flex flex-column about py-5">
                 <!--Upload File Section-->
-                <div class="row justify-content-center">
+                <div id="upload-view" class="row justify-content-center">
                     <div class="col-md-12">
-                        <h1 class="pb-5 text-left">Step 1: Select File</h1>
+                        <h2 class="pb-5 text-left">Step 1: Select File</h2>
                         <form method="#" action="#" enctype="multipart/form-data">
                             <label>Upload File</label>
                             <input id="filename" type="file" name="file">
                             <input type="hidden" name="action" value="upload">
-                            <button style="border-radius: 25px;" class="my-3 btn btn-primary btn-md px-5" id="upload" onclick="return false;">Upload</button>
+                            <br>
+                            <button style="width: 50%;" class="my-3 btn btn-primary btn-sm px-5" id="upload" onclick="return false;">Upload</button>
                         </form>
                     </div>
                 </div>
@@ -32,13 +33,13 @@
                 <div id="emp-view" class="row justify-content-center py-5 invisible">
                     <!--Select Drop Down List for Emp Names-->
                     <div class="col-md-8">
-                        <h1 class="pb-5 text-left">Step 2: Select Employees</h1>
+                        <h2 class="pb-5 text-left">Step 2: Select Employees</h2>
                         <label>Choose Employee(s)</label>
                         <select id="employees">
-                            <option value=""></option>
                         </select>
                         <br>
-                        <button class="my-2 btn btn-primary btn-sm mr-5 btn-block" id="emp-btn" onclick="return false;">Confirm</button>
+                        <button class="my-2 px-5 btn btn-secondary btn-sm" id="emp-back-btn" onclick="return false;">Go Back</button>
+                        <button class="my-2 px-5 btn btn-primary btn-sm" id="emp-btn" onclick="return false;">Confirm</button>
                     </div>
                     <!--Section of Employee Names Selected-->
                     <div class="col-md-4">
@@ -47,17 +48,17 @@
                     </div>
                 </div>
                 <!--Select Companies List Section-->      
-                <div class="row py-5 invisible" id="cp-view">
+                <div class="row pt-5 invisible" id="cp-view">
                     <!--Select Drop Down List for Co. Names-->           
                     <div class="col-md-8">
-                        <h1 class="pb-5 text-left">Step 3: Select Companies</h1>
+                        <h2 class="pb-5 text-left">Step 3: Select Companies</h2>
                         <label>Choose Company(s)</label>
                         <select id="companies" required>
-                            <option value=""></option>
                         </select>
                         <br>
-                        <button class="my-2 btn btn-primary btn-sm btn-block mr-5" id="cp-btn" onclick="return false;">Confirm</button>                 
-                        <button style="border-radius: 25px;" class="my-5 btn btn-success btn-lg btn-block px-5" id="generate" onclick="return false;">Generate Report</button>
+                        <button class="my-2 px-5 btn btn-secondary btn-sm" id="cp-back-btn" onclick="return false;">Go Back</button>
+                        <a href="./finish.html" class="my-2 px-5 btn btn-success btn-sm" id="generate">Generate</a>
+                        <hr> 
                     </div>
                     <!--Section of Co. Names Selected-->
                     <div class="col-md-4">
