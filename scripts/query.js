@@ -122,7 +122,9 @@ $(document).ready(() => {
 		const headers = getHeadings(headerRows.DLAR);
 		data = [ ...headers ];
 		for (let i = 0; i < selected[1].length; i++) {
-			data = [ ...data, ...findRecord(selected[0], selected[1][i], resultRows.DLAR) ];
+			const record = findRecord(selected[0], selected[1][i], resultRows.DLAR);
+			addSum(data, record);
+			data = [ ...data, ...record ];
 		}
 		console.log('Finshed query...\nGenerating report...');
 		if (file_path && data) {

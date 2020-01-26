@@ -67,6 +67,14 @@ const getHeadings = (json) => {
 			json[i]['DR'] = (json[i]['DR'] * 100).toFixed(2) + ' %';
 			json[i]['DW'] = (json[i]['DW'] * 100).toFixed(2) + ' %';
 			json[i]['DZ'] = (json[i]['DZ'] * 100).toFixed(2) + ' %';
+
+			if (i == 2) {
+				json[i]['AI'] = 0;
+				json[i]['AJ'] = 0;
+				json[i]['AK'] = 0;
+				json[i]['AL'] = 0;
+				json[i]['DY'] = 0;
+			}
 		}
 		list.push(json[i]);
 	}
@@ -176,6 +184,38 @@ const generateExcel = (file_path, json) => {
 	});
 };
 
+/* Add the sum of each column to it */
+const addSum = (parent, children) => {
+	const cells = [ 'AI', 'AJ', 'AK', 'AL', 'DY' ];
+	for (let i = 0; i < cells.length; i++) {
+		parent[2][cells[i]] += [].concat
+			.apply(
+				[],
+				children.map((item) => {
+					return item[cells[i]];
+				})
+			)
+			.reduce((a, b) => a + b, 0);
+	}
+};
+
+// const file_path = '/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx';
+// let data = [];
+// const headerRows = headings(file_path);
+// const resultRows = result(file_path);
+// const headers = getHeadings(headerRows.DLAR);
+// const a = [
+// 	[ 'Marco Solorzano', 'marco solorzano' ],
+// 	[ 'Crystal Clear Wireless', 'MI Wireless 1', 'MI Wireless 10', 'MI Wireless 2' ]
+// ];
+// data = [ ...headers ];
+// for (let i = 0; i < a[1].length; i++) {
+// 	let record = findRecord(a[0], a[1][i], resultRows.DLAR);
+// 	addSum(data, record);
+// 	data = [ ...data, ...record ];
+// }
+
+// console.log(data);
 // const r = result('/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx').DLAR;
 // console.log(findRecord([ 'marco solorzano', 'Marco Solorzano' ], 'Nb Network Solutions', r));
 // // const records = findRecord('Nb Network Solutions', r);
