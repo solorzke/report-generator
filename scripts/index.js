@@ -11,6 +11,37 @@ const parse_path = (file_path) => {
 	return path + 'report.xlsx';
 };
 
+/* Add the sum of each column to it */
+const addSum = (parent, children) => {
+	const cells = [ 'AI', 'AJ', 'AK', 'AL', 'DY' ];
+	for (let i = 0; i < cells.length; i++) {
+		parent[2][cells[i]] += [].concat
+			.apply(
+				[],
+				children.map((item) => {
+					return item[cells[i]];
+				})
+			)
+			.reduce((a, b) => a + b, 0);
+	}
+};
+
+const calculatePercents = (parent, children) => {
+	const cells = [
+		{ cell: 'DG', a: 'DD4', b: 'DC4' },
+		{ cell: 'DR', a: 'DQ4', b: 'AL4' },
+		{ cell: 'DW', a: 'DU4', b: 'DV4' },
+		{ cell: 'DZ', a: 'DX4', b: 'DY4' }
+	];
+	for (let i = 0; i < cells.length; i++) {
+		parent[2][cells[i]['cell']] = pare;
+	}
+	//DG: DD4/DC4
+	//DR: DQ4/AL4
+	//DW: DU4/DV4
+	//DZ: DX4/DY4
+};
+
 const headings = (file_path) => {
 	return excelToJson({
 		sourceFile: file_path,
@@ -182,21 +213,6 @@ const generateExcel = (file_path, json) => {
 	workbook.commit().then(() => {
 		console.log('File created. Stored in ' + file_path);
 	});
-};
-
-/* Add the sum of each column to it */
-const addSum = (parent, children) => {
-	const cells = [ 'AI', 'AJ', 'AK', 'AL', 'DY' ];
-	for (let i = 0; i < cells.length; i++) {
-		parent[2][cells[i]] += [].concat
-			.apply(
-				[],
-				children.map((item) => {
-					return item[cells[i]];
-				})
-			)
-			.reduce((a, b) => a + b, 0);
-	}
 };
 
 // const file_path = '/Users/solorzke/Downloads/prepaid_daily_pulse_naws(1).xlsx';
